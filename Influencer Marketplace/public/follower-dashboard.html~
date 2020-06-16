@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>My Dashboard</title>
+
+    <!-- These two lines provide automatic page and style reloading when files change -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/lib/client/updater.js" defer></script>
+
+    <!-- Open Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="3_social.css">
+
+    <script type="module" src="3_social.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <div class="widthContainer">
+        <h1 class="brand">My Dashboard</h1>     
+      </div>
+    </header>
+    <main id="main">
+      	
+      
+      <div class="widthContainer">
+
+	
+	<div id= "welcome" class="paper">
+          <h1>Welcome to <span class="brand">Influencer Marketplace</span></h1>
+          <h2>Login to view your dashboard</h2>
+	  <form id="loginForm">
+            <input name="userid" placeholder="Search">
+            <button type="submit" id="login">Login</button>
+          </form>
+	</div>
+
+	<div id="mainPage" class="hidden">
+
+	  <section id="sidebar">
+            <section id="followPanel">
+              <h2>My Follows</h2>
+            </section>
+          </section>
+	  
+	  
+	 
+	  <div id= "influencerPage">
+
+	    <form id="searchForm">
+              <input name="influencerid" placeholder="Search for an Influencer">
+              <button type="submit" id="search">Search</button>
+            </form>
+
+
+	    <div id="profile" class="hidden">
+	      <img id="profilePic" src="images/Tiffany-Houghton.jpeg" alt="Tiffany Houghton">
+	      <div id="info">
+		<div id="name">Tiffany Houghton</div>
+		<div id="bio">Pop Music | Radio Disney | Billboard | Teen Vogue | Tik Tok</div>
+		<div id="stats">
+		  <div class= "stat" id="followerCount">Followers: 10,000</div>
+		  <div class= "stat" id="prizeCount">Prizes: 12</div>
+		</div>
+		<div id="followingStatus">following</div>
+	      </div>
+	    </div>
+	    
+	    <!--
+	    <div id= "profile" class="hidden">
+	      <img id="profilePic" src="images/Tiffany-Houghton.jpeg" alt="Tiffany Houghton">
+	      <div id="info">
+		<div id="name">Tiffany Houghton</div>
+		<div id="bio">Pop Music | Radio Disney | Billboard | Teen Vogue | Tik Tok</div>
+		<div id="stats">
+		  <div class= "stat" id="followerCount">Followers: 10,000</div>
+		  <div class= "stat" id="prizeCount">Prizes: 12</div>
+		</div>
+		<div id="followingStatus">following</div>
+	      </div>
+	    </div>
+	    -->
+
+	    <div id="prizes" class="hidden">
+	      <h2 id="prizesHeader">
+		<div id="prizesHeaderText">Prizes</div>
+		<div id="totalPoints">Total Points: 20,000</div>
+	      </h2>
+	      
+	      <div id="templatePrize" class="paper hidden">
+		<div class="prizeName"></div>
+		<div class="prizeDetails">
+		  <img src="images/tiffanyhoughtonphonecall.jpg" class= "prizePicture"></img>
+		  <div class="prizeNumbers">
+		    <div class="prizeCost"></div>
+		    <div class="prizeQuantity"></div>
+		  </div>
+		  <div class="prizeDescription">
+		    <div class="descriptionTitle"></div>
+		    <div class="descriptionContent"></div>
+		  </div>
+		  <button type="button"></button>
+		</div>
+	      </div>
+	      
+
+	      
+	    </div>
+	  </div>	
+	</div>
+
+
+      </div>
+    </main>
+  </body>
+</html>

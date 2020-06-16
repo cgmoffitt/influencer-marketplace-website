@@ -1,0 +1,33 @@
+CS193X Final Project Milestone
+=============================
+
+Project Name: <Influencer Marketplace>
+Your Name: <Chris Moffitt>
+Your SUNetID: <cmoffitt>
+
+Overview
+--------
+<Things are going well. So far, I have mostly worked on design of the website including the html, css, and general design of how the key database objects will be organized. I now need to implement the apis and the code to have make the website dynamic.>
+
+Project Changes
+---------------
+<Nothing has changed so far>
+
+API
+---
+<Some API
+1) Get Influencer: this will return an influencer object with the properties: name, picture, bio, follower count, and an array of prize objects
+2) Purchase prize: this will be called when a follower purchases an influencer's "prize." It will update the quantity of the prize object for the influencer, the amount of total points that a follower has, and the array of prize objects that a follower has
+3) Follow an influencer: this adds an influencer to the array of influencers that a follower has>
+
+External libraries and code
+---------------------------
+<So far I haven't used any external libraries>
+
+Collaboration and resources
+---------------------------
+<So far I don't plan to use any code>
+
+Anything else?
+-------------
+<Doing well, but time is tight!>

@@ -1,0 +1,429 @@
+/***** Global Elements *****/
+
+:root {
+  box-sizing: border-box;
+}
+/*
+* {
+  box-sizing: inherit;
+}*/
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fafafa;
+  height: 100vh;
+  overflow: auto;
+}
+
+h1 {
+  font-size: large;
+}
+
+h2 {
+    display: flex;
+    font-size: medium;
+}
+
+label {
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+}
+
+button {
+  padding: 0.3rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: solid 1px #1da1f2;
+  border-radius: 0.75rem;
+  background-color: #1da1f2;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d7fcf;
+}
+
+button.secondary {
+  background-color: white;
+  color: #1da1f2;
+}
+
+button.secondary:hover {
+  background-color: #f1f1f1;
+}
+
+input {
+  background-color: #e6ecf0;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+input:focus {
+  background-color: white;
+  border: 1px solid #ccd6dd;
+}
+
+/***** Generic Containers ******/
+
+.divider {
+  margin: 3rem 0;
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+}
+
+.widthContainer {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+/***** Header *****/
+
+.brand {
+  color: #3b5998;
+  font-weight: 700;
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ccd6dd;
+  background-color: white;
+}
+
+#header .widthContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#header h1 {
+  font-weight: 600;
+}
+
+#header input {
+  font-size: 1rem;
+  width: 200px;
+}
+
+#header #searchForm {
+  display: flex;
+  align-items: center;
+}
+
+#header #loginForm > *:not(last-of-type) {
+  margin-right: 1rem;
+}
+
+/***** Welcome *****/
+
+#welcome {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    padding-bottom: 1rem;
+}
+
+#welcome.hidden {
+  display: none;
+}
+
+#welcome h1 {
+  font-size: 1.8em;
+  font-weight: 300;
+}
+
+#welcome .paper {
+  width: 50%;
+  text-align: center;
+}
+
+/***** Main *****/
+
+#main {
+  display: flex;
+  /*justify-content: center;
+  /*padding: 0.5rem 0;*/
+  animation: fadein 1s;
+  height: 100%;
+}
+
+#main.hidden, #templatePost {
+  display: none;
+}
+
+#main .widthContainer {
+    display: flex;
+}
+
+
+/***** Sidebar *****/
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    height: 200%;
+    border-right: solid;
+    border-width: 1px;
+    border-color: #ccd6dd; 
+}
+
+#followPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#followPanel > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: solid 1px #ccd6dd;
+
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+	    
+}
+
+#followPanel h2, #followPanel h2 {
+    font-size: x-large;
+    font-weight: 300;
+    width: 100%;
+    justify-content: center;
+    border-bottom: solid 1px #ccd6dd;
+    margin: 0;
+
+}
+
+#followPanel label {
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+
+/********Main Page*********/
+
+
+#mainPage{
+    display: flex;
+    flex-direction: row;
+    animation: fadein 1s;
+    width: 100%;
+}
+
+#mainPage.hidden {
+    display: none
+}
+
+#mainPage #searchForm {
+    
+    padding-right: 2rem;
+    justify-content: center;
+    align-self: center;
+    padding-top: 2rem;
+}
+
+/*****Influencer Page ****/
+
+
+
+#influencerPage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+
+#mainPage input {
+    width: 30vw;
+}
+
+#influencerPage img {
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#profile.hidden {
+    display: none;
+}
+
+#profile {
+    padding-top: 2rem;
+    padding-left: 3rem;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    height: 40%
+    border-bottom: solid 1px #ccd6dd;
+}
+
+#info {
+    display: flex;
+    flex-direction: column;
+    padding-left: 5rem;
+    width: 100%;
+}
+
+#name {
+    padding-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#bio {
+    padding-bottom: 1rem;;
+
+}
+
+#stats {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1rem;
+}
+
+#prizeCount{
+    margin-left: 5rem;
+}
+
+#followingStatus {
+    border: 1px solid #c7d1c5;
+    border-radius: 4px;
+    background-color: #ffff;
+    padding: 2px;
+    margin: 10px 0;
+    width: 15vw;
+    text-align: center;
+}
+
+/***** Prizes *******/
+
+#prizes.hidden {
+    display: none;
+}
+
+#prizes {
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+}
+
+#templatePrize.hidden {
+    display: none;
+}
+
+#prizesHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
+    border-bottom: solid 1px #ccd6dd;
+}
+
+#prizesHeader > div {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.paper {
+    margin: 2rem;
+    margin-bottom: 0.5rem;
+    background-color: white;
+    border-radius: 0.6rem;
+    box-shadow: 1px 1px 1px 1px lightgray;
+}
+
+.prizeName {
+    padding: 1rem;
+    font-weight: bold;
+}
+
+.prizeDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#prizes img {
+    border-radius: 10%;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);    		
+}
+
+.prizeNumbers {
+    width: 20%;
+}
+
+.prizeNumbers > div {
+    padding-bottom: 2rem;
+
+}
+
+.prizeDescription {
+    width: 40%;
+    padding-right: 3rem;
+}
+
+.descriptionTitle {
+    font-weight: bold;
+}
+
+#prizes button{
+    height: 10%;
+    margin-right: 2rem;
+}
+
+
+ 
+
+
+/***** Editable Text *****/
+
+.editableInput {
+  width: 100%;
+}
+
+.editableText {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.editableText > span {
+  flex-grow: 1;
+  margin-right: 0.5rem;
+  background-color: #e6ecf0;
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  font-size: 1rem;
+}
+
+/***** Animations *****/
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

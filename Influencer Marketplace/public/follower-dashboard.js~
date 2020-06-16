@@ -1,0 +1,244 @@
+import User from "./User.js";
+import Influencer from "./Influencer.js";
+import EditableText from "./EditableText.js";
+import DynamicList from "./DynamicList.js";
+
+class App {
+    constructor() {
+	this._user = null;
+	this._loginForm = null;
+	this._followPanel = null;
+	this._searchForm = null;
+	this._displayedInfluencer = null;
+	this._influencerPage = null;
+
+	//this._onListUsers = this._onListUsers.bind(this);
+	this._onLogin = this._onLogin.bind(this);
+	this._onSearch = this._onSearch.bind(this);
+
+	//TODO: Add instance variables, bind event handlers, etc.
+	this._loadProfile = this._loadProfile.bind(this);
+	this._loadFollowPanel = this._loadFollowPanel.bind(this);
+	this._loadInfluencerPage = this._loadInfluencerPage.bind(this);
+	/*this._displayName = null;
+	this._avatarURLDisplay = null;
+	this._followingDisplay = null;
+	this._postButton = null;
+
+	this._onChange = this._onChange.bind(this);
+	this._onPost = this._onPost.bind(this);
+	this._onAddFollower = this._onAddFollower.bind(this);
+	this._onDeleteFollower = this._onDeleteFollower.bind(this);
+	this._setDisplayName = this._setDisplayName.bind(this);
+	this._setAvatarURL = this._setAvatarURL.bind(this);
+	this._setFollowingDisplay = this._setFollowingDisplay.bind(this);*/
+    }
+
+    setup() {
+	this._loginForm = document.querySelector("#loginForm");
+	this._loginForm.login.addEventListener("click", this._onLogin);
+	//this._loginForm.listUsers.addEventListener("click", this._onListUsers);
+
+	this._postForm = document.querySelector("#postForm");
+
+	
+    }
+
+    _getAvatar(user) {
+	let url = user.avatarURL;
+	if (!url) url = "images/default.png";
+	return url;
+    }
+
+    _displayPost(post) {
+	let node = document.querySelector("#templatePost").cloneNode(true);
+	node.id = "";
+
+	let avatar = node.querySelector(".avatar");
+	avatar.src = this._getAvatar(post.user);
+	avatar.alt = `${post.user.name}'s avatar`;
+
+	node.querySelector(".name").textContent = post.user.name;
+	node.querySelector(".userid").textContent = post.user.id;
+	node.querySelector(".time").textContent = post.time.toLocaleString();
+	node.querySelector(".text").textContent = post.text;
+
+	document.querySelector("#feed").appendChild(node);
+    }
+
+    async _loadProfile() {
+	document.querySelector("#welcome").classList.add("hidden");
+	document.querySelector("#mainPage").classList.remove("hidden");
+	this._searchForm = document.querySelector("#searchForm");
+	this._searchForm.search.addEventListener("click", this._onSearch);
+
+
+	
+	//Update followPanel
+	this._loadFollowPanel();
+	
+	/*
+	this._setDisplayName();
+	this._setAvatarURL();
+	this._setFollowingDisplay();
+
+	//Load the feed
+	try {
+	    let posts = await this._user.getFeed();
+	    //console.log(posts);
+	    var post;
+	    for (post of posts) {
+		this._displayPost(post);
+	    }
+	}catch(e){
+	    alert(e);
+	}
+
+	//Set up New Post functionality
+	this._postButton = this._postForm.querySelector("#postButton");
+	this._postButton.addEventListener("click", this._onPost);*/
+	
+	
+    }
+
+    _loadFollowPanel(){
+	this._followPanel = document.querySelector("#followPanel")
+
+	for(let influencer of this._user.following.map(details => details.influencer_id)){
+	    let influencerTab = document.createElement('div');
+	    influencerTab.textContent = influencer;
+	    this._followPanel.appendChild(influencerTab);
+	}
+    }
+
+    _loadInfluencerPage(){
+	this._influencerPage = document.querySelector("#influencerPage");
+	console.log(this._influencerPage);
+
+	//Load Influencer profile
+	let profile = this._influencerPage.querySelector("#profile");
+	profile.querySelector("#name").textContent = this._displayedInfluencer.name;
+	profile.querySelector("#bio").textContent = this._displayedInfluencer.bio;
+	profile.querySelector("#followerCount").textContent = `Followers: ${this._displayedInfluencer.numFollowers}`;
+	profile.querySelector("#prizeCount").textContent = `Prizes: ${this._displayedInfluencer.prizes.length}`;
+	/*if (this._user._isFollowing(this.displayedInfluencer.id)){
+	    profile.querySelector("#followingStatus").textContent = "following";
+	} else {
+	    profile.querySelector("#followingStatus").textContent = "follow";
+	}*/
+	profile.classList.remove("hidden");
+
+	//Load Influencer Prizes
+	let prizes = this._influencerPage.querySelector("#prizes");
+	console.log(prizes);
+	prizes.classList.remove("hidden");
+	for (let prize of this._displayedInfluencer.prizes){
+	    let prizeDisplay = prizes.querySelector("#templatePrize").cloneNode(true);
+	    prizeDisplay.id = "";
+	    prizeDisplay.querySelector(".prizeName").textContent = prize.name;
+	    prizeDisplay.querySelector(".prizePicture").textContent = prize.picture;
+	    prizeDisplay.querySelector(".prizeCost").textContent = `Cost: ${prize.cost}`;
+	    prizeDisplay.querySelector(".prizeQuantity").textContent = `Quantity: ${prize.quantity}`;
+	    prizeDisplay.querySelector(".descriptionTitle").textContent = "Descrition:";
+	    prizeDisplay.querySelector(".descriptionContent").textContent = prize.description;
+	    prizeDisplay.querySelector("button").textContent = "Redeem Points to Win!";
+	    prizes.appendChild(prizeDisplay);
+	}
+	
+	
+	
+    }
+
+    
+/*
+    _setDisplayName(){
+	if (this._displayName === null){
+	    this._displayName = new EditableText("display");
+	    this._displayName.addToDOM(document.querySelector("#nameContainer"), this._onChange);
+	}
+	this._displayName.setValue(this._user.name);
+    }
+
+    _setAvatarURL(){
+	if (this._avatarURLDisplay === null) {
+	    this._avatarURLDisplay = new EditableText("avatar");
+	    this._avatarURLDisplay.addToDOM(document.querySelector("#avatarContainer"), this._onChange);
+	}
+	this._avatarURLDisplay.setValue(this._user.avatarURL);
+    }
+
+    _setFollowingDisplay(){
+	if (this._followingDisplay === null){
+	    this._followingDisplay = new DynamicList();
+	    this._followingDisplay.addToDOM(document.querySelector("#followContainer"), this._onAddFollower, this._onDeleteFollower);
+	}
+	this._followingDisplay.setList(this._user.following);
+    }
+
+
+
+    /*** Event Handlers ***/
+	/*
+
+    async _onAddFollower(idToFollow){
+	event.preventDefault();
+	//console.log(idToFollow);
+	let res = await this._user.addFollow(idToFollow);
+	this._user = await User.loadOrCreate(this._user.id);
+	this._loadProfile();
+
+    }
+
+    async _onDeleteFollower(idToDelete){
+	event.preventDefault();
+	console.log(idToDelete);
+	let res = await this._user.deleteFollow(idToDelete);
+	this._user = await User.loadOrCreate(this._user.id);
+	this._loadProfile();
+    }
+
+    async _onPost() {
+	event.preventDefault();
+	console.log(this._user);
+	let text = this._postForm.querySelector("#newPost").value;
+	let res = await this._user.makePost(text);
+	this._user = await User.loadOrCreate(this._user.id);
+	this._loadProfile();
+	console.log(this._user);
+	
+    }
+
+    async _onChange(text) {
+	alert(`${text.id} changed to ${text.value}`);
+	this._user.name = this._displayName.value;
+	this._user.avatarURL = this._avatarURLDisplay.value;
+	this._user = await this._user.save();
+	this._loadProfile();
+    }
+
+    async _onListUsers() {
+	let users = await User.listUsers();
+	let usersStr = users.join("\n");
+	alert(`List of users:\n\n${usersStr}`);
+    }*/
+
+    async _onLogin(event) {
+	event.preventDefault();
+	//TODO: Complete this function. You should set this._user and call loadProfile
+	let id = this._loginForm.userid.value;
+	this._user = await User.loadOrCreate(id);
+	console.log(this._user);
+	this._loadProfile();
+    }
+
+    async _onSearch(event){
+	event.preventDefault();
+	let id = this._searchForm.influencerid.value;
+	this._displayedInfluencer = await Influencer.load(id);
+	console.log(this._displayedInfluencer);
+	this._loadInfluencerPage();
+    }
+}
+
+let app = new App();
+app.setup();

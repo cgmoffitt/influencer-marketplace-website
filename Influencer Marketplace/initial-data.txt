@@ -1,0 +1,21 @@
+Enter these commands into mongodb to initialize some example data
+
+use influencer_marketplace
+
+db.users.insertOne(id : "cmoffitt", name: "Chris Moffitt", following: [ { influencer_id: "tiffanyhoughton", points: 6000 }, { influencer_id: "turtlecreeklane", points: 1000 }, { influencer_id: "kimmyhoughton", points: 3000 } ], myPrizes: [ { prize: { name: "Personal Phone Call", picture: "tiffanyhoughtonphonecall.jpg", description: "I want to talk with you! Win this prize so we can plan a 20 minute phone call sometime! I'll tell you about my secret plans for my next music release and you can tell me about your own goals! Maybe I can help!", quantity: 72, cost: 12000 }, date_received: Date(), influencer: "tiffanyhoughton" } ] })
+
+db.influencers.insertOne({id: "tiffanyhoughton", name: "Tiffany Houghton", picture: "Tiffany-Houghton.jpeg", numFollowers: 10000, bio: "Pop Music | Radio Disney | Billboard | Teen Vogue | Tik To", prizes: [ { name: "Personal Phone Call", picture: "tiffanyhoughtonphonecall.jpg", description: "I want to talk with you! Win this prize so we can plan a 20 minute phone call sometime! I'll tell you about my secret plans for my next music release and you can tell me about your own goals! Maybe I can help!", quantity: 72, cost: 12000 } ] })
+
+db.influencers.insertOne({id: "edsheeran", name: "Ed Sheeran", picture: "Ed-Sheeran.jpg", numFollowers: 31000000, bio: "Celebrity", prizes: [{ name: "1-on-1 Guitar Lesson", picture: "sheeran-guitar.jpeg", description: "Let me help you become a pro guitarist.", quantity: 1, cost: 100000} ]})
+
+db.influencers.insertOne({id: "turtlecreeklane", name: "Turtle Creek Lane", picture: "TurtleCreekLane.jpeg", numFollowers: 424000, bio: "Not your ordinary Interior Decorator ", prizes: [{ name: "Halloween Decor Set", picture: "TurtleCreekHalloween.jpg", description: "Spook up your fall with my absolute favorite decorations", quantity: 25, cost: 2000} ]})
+
+db.influencers.insertOne({id: "kimmyhoughton", name: "Kimmy Houghton", picture: "Kimmy-Houghton.jpeg", numFollowers: 43900, bio: "Weekly Date ideas \n 💕 Affordable Fashion ", prizes: [{ name: "Gym Starter Pack", picture: "KimmyGym.jpg", description: "I take these essentials with me to workout every day!", quantity: 25, cost: 2000} ]})
+
+db.influencers.insertOne({id: "iamgalla", name: "Adam Gallagher", picture: "Adam-Gallagher.jpeg", numFollowers: 1900000, bio: "adam@iamgalla.com ", prizes: [{ name: "Cologne", picture: "KimmyGym.jpg", description: "I take these essentials with me to workout every day!", quantity: 25, cost: 2000} ]})
+
+db.influencers.insertOne({id: "kevincurry", name: "Kevin Curry", picture: "Kevin-Curry.jpg", numFollowers: 1600000, bio: "Living life healthier & happier! ", prizes: [{ name: "My Specialized Cookbook", picture: "KevinCurryPrize.jpg", description: "Win some personalized advice and shopping tips from me AND a copy of my book!", quantity: 25, cost: 2000} ]})
+
+db.influencers.insertOne({id: "wsimmons", name: "Whitney Simmons", picture: "Whitney-Simmons.jpg", numFollowers: 3000000, bio: "Fitness Trainer ", prizes: [{ name: "Gym Shark fitness clothing", picture: "gymshark.png", description: "2 sets of workout clothes, your choice! These are my favorite!", quantity: 25, cost: 2000} ]})
+
+

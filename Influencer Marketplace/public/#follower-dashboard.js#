@@ -1,0 +1,155 @@
+import User from "./User.js";
+import Influencer from "./Influencer.js";
+import EditableText from "./EditableText.js";
+import DynamicList from "./DynamicList.js";
+
+class App {
+    constructor() {
+	//Instance Variables
+	this._user = null;
+	this._loginForm = null;
+	this._followPanel = null;
+	this._searchForm = null;
+	this._displayedInfluencer = null;
+	this._influencerPage = null;
+
+	//Event handlers
+	this._onLogin = this._onLogin.bind(this);
+	this._onSearch = this._onSearch.bind(this);
+	this._onSelect =  this._onSelect.bind(this);
+
+	//Methods
+	this._loadProfile = this._loadProfile.bind(this);
+	this._loadFollowPanel = this._loadFollowPanel.bind(this);
+	this._loadInfluencerPage = this._loadInfluencerPage.bind(this);
+	this._loadInfluencerProfile = this._loadInfluencerProfile.bind(this);
+	this._loadInfluencerPrizes = this._loadInfluencerPrizes.bind(this);
+    }
+
+    setup() {
+	this._loginForm = document.querySelector("#loginForm");
+	this._loginForm.login.addEventListener("click", this._onLogin);
+
+	this._postForm = document.querySelector("#postForm");
+
+	
+    }
+
+    _displayPost(post) {
+	let node = document.querySelector("#templatePost").cloneNode(true);
+	node.id = "";
+
+	let avatar = node.querySelector(".avatar");
+	avatar.src = this._getAvatar(post.user);
+	avatar.alt = `${post.user.name}'s avatar`;
+
+	node.querySelector(".name").textContent = post.user.name;
+	node.querySelector(".userid").textContent = post.user.id;
+	node.querySelector(".time").textContent = post.time.toLocaleString();
+	node.querySelector(".text").textContent = post.text;
+
+	document.querySelector("#feed").appendChild(node);
+    }
+
+    async _loadProfile() {
+	document.querySelector("#welcome").classList.add("hidden");
+	document.querySelector("#mainPage").classList.remove("hidden");
+	this._searchForm = document.querySelector("#searchForm");
+	this._searchForm.search.addEventListener("click", this._onSearch);
+	
+	//Update followPanel
+	this._loadFollowPanel();
+    }
+
+    _loadFollowPanel(){
+	this._followPanel = document.querySelector("#followPanel")
+
+	for(let influencer of this._user.following.map(details => details.influencer_id)){
+	    let influencerTab = document.createElement('div');
+	    influencerTab.textContent = influencer;
+	    influencerTab.classList.add("hover");
+	    this._followPanel.appendChild(influencerTab);
+	    influencerTab.addEventListener("click", this._onSelect)
+	}
+    }
+
+    _loadInfluencerPage(){
+	this._influencerPage = document.querySelector("#influencerPage");
+
+	//Load Influencer profile
+	this._loadInfluencerProfile();
+	
+	//Load Influencer Prizes
+	this._loadInfluencerPrizes();
+    }
+
+    _loadInfluencerProfile(){
+	let profile = this._influencerPage.querySelector("#profile");
+	profile.querySelector("#profilePic").src = `images/${this._displayedInfluencer.picture}`;
+	profile.querySelector("#name").textContent = this._displayedInfluencer.name;
+	profile.querySelector("#bio").textContent = this._displayedInfluencer.bio;
+	profile.querySelector("#followerCount").textContent = `Followers: ${this._displayedInfluencer.numFollowers}`;
+	profile.querySelector("#prizeCount").textContent = `Prizes: ${this._displayedInfluencer.prizes.length}`;
+	/*if (this._user._isFollowing(this.displayedInfluencer.id)){
+	    profile.querySelector("#followingStatus").textContent = "following";
+	} else {
+	    profile.querySelector("#followingStatus").textContent = "follow";
+	}*/
+	profile.classList.remove("hidden");
+    }
+
+    _loadInfluencerPrizes(){
+
+	//Add influencer's prizes
+	let prizes = this._influencerPage.querySelector("#prizes");
+	prizes.classList.remove("hidden");
+	let prizeDisplays = prizes.querySelector("#prizeDisplays");
+
+	//Clear anything that might be there
+	while (prizeDisplays.firstChild) {
+	    prizeDisplays.removeChild(prizeDisplays.firstChild);
+	}
+	
+	for (let prize of this._displayedInfluencer.prizes){
+	    let prizeDisplay = prizes.querySelector("#templatePrize").cloneNode(true);
+	    prizeDisplay.id = "";
+	    prizeDisplay.querySelector(".prizeName").textContent = prize.name;
+	    prizeDisplay.querySelector(".prizePicture").src = `images/${prize.picture}`;
+	    prizeDisplay.querySelector(".prizePicture").alt = prize.name;
+	    prizeDisplay.querySelector(".prizeCost").textContent = `Cost: ${prize.cost}`;
+	    prizeDisplay.querySelector(".prizeQuantity").textContent = `Quantity: ${prize.quantity}`;
+	    prizeDisplay.querySelector(".descriptionTitle").textContent = "Descrition:";
+	    prizeDisplay.querySelector(".descriptionContent").textContent = prize.description;
+	    prizeDisplay.querySelector("button").textContent = "Redeem Points to Win!";
+	    
+	    //prizes.appendChild(prizeDisplay);
+	    prizeDisplays.appendChild(prizeDisplay);
+	}
+    }
+
+
+    async _onLogin(event) {
+	event.preventDefault();
+	let id = this._loginForm.userid.value;
+	this._user = await User.loadOrCreate(id);
+	this._loadProfile();
+    }
+
+    async _onSearch(event){
+	event.preventDefault();
+	let id = this._searchForm.influencerid.value;
+	this._displayedInfluencer = await Influencer.load(id);
+	this._loadInfluencerPage();
+    }
+
+    async _onSelect(event){
+	event.preventDefault();
+	let id = event.target.textContent;
+	this._displayedInfluencer = await Influencer.load(id);
+	this._loadInfluencerPage();
+	
+    }
+}
+
+let app = new App();
+app.setup();
