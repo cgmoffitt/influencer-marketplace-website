@@ -5,7 +5,6 @@ import DynamicList from "./DynamicList.js";
 
 class App {
     constructor() {
-	//Instance Variables
 	this._user = null;
 	this._loginForm = null;
 	this._followPanel = null;
@@ -13,26 +12,34 @@ class App {
 	this._displayedInfluencer = null;
 	this._influencerPage = null;
 
-	//Event handlers
+	//this._onListUsers = this._onListUsers.bind(this);
 	this._onLogin = this._onLogin.bind(this);
 	this._onSearch = this._onSearch.bind(this);
 	this._onSelect =  this._onSelect.bind(this);
 
-	//Methods
+	//TODO: Add instance variables, bind event handlers, etc.
 	this._loadProfile = this._loadProfile.bind(this);
 	this._loadFollowPanel = this._loadFollowPanel.bind(this);
 	this._loadInfluencerPage = this._loadInfluencerPage.bind(this);
 	this._loadInfluencerProfile = this._loadInfluencerProfile.bind(this);
 	this._loadInfluencerPrizes = this._loadInfluencerPrizes.bind(this);
+	this._isFollowing = this._isFollowing.bind(this);
     }
 
     setup() {
 	this._loginForm = document.querySelector("#loginForm");
 	this._loginForm.login.addEventListener("click", this._onLogin);
+	//this._loginForm.listUsers.addEventListener("click", this._onListUsers);
 
 	this._postForm = document.querySelector("#postForm");
 
 	
+    }
+
+    _getAvatar(user) {
+	let url = user.avatarURL;
+	if (!url) url = "images/default.png";
+	return url;
     }
 
     _displayPost(post) {
@@ -64,7 +71,7 @@ class App {
     _loadFollowPanel(){
 	this._followPanel = document.querySelector("#followPanel")
 
-	for(let influencer of this._user.following.map(details => details.influencer_id)){
+	for (let influencer in this._user.following){
 	    let influencerTab = document.createElement('div');
 	    influencerTab.textContent = influencer;
 	    influencerTab.classList.add("hover");
@@ -75,6 +82,7 @@ class App {
 
     _loadInfluencerPage(){
 	this._influencerPage = document.querySelector("#influencerPage");
+	console.log(this._influencerPage);
 
 	//Load Influencer profile
 	this._loadInfluencerProfile();
@@ -90,18 +98,28 @@ class App {
 	profile.querySelector("#bio").textContent = this._displayedInfluencer.bio;
 	profile.querySelector("#followerCount").textContent = `Followers: ${this._displayedInfluencer.numFollowers}`;
 	profile.querySelector("#prizeCount").textContent = `Prizes: ${this._displayedInfluencer.prizes.length}`;
-	/*if (this._user._isFollowing(this.displayedInfluencer.id)){
+	if (this._isFollowing()){
 	    profile.querySelector("#followingStatus").textContent = "following";
 	} else {
 	    profile.querySelector("#followingStatus").textContent = "follow";
-	}*/
+	}
 	profile.classList.remove("hidden");
     }
 
-    _loadInfluencerPrizes(){
+    _isFollowing(){
+	if (this._user.following.hasOwnProperty(this._displayedInfluencer.id)){
+	    return true;
+	} else {
+	    return false;
+	}
+    }
 
+    _loadInfluencerPrizes(){
 	//Add influencer's prizes
 	let prizes = this._influencerPage.querySelector("#prizes");
+	let points;
+	if (this.)
+	prizes.querySelector("#totalPoints").textContent = `Total Points: ${points]}`
 	prizes.classList.remove("hidden");
 	let prizeDisplays = prizes.querySelector("#prizeDisplays");
 
@@ -111,6 +129,7 @@ class App {
 	}
 	
 	for (let prize of this._displayedInfluencer.prizes){
+	    console.log(prize.name)
 	    let prizeDisplay = prizes.querySelector("#templatePrize").cloneNode(true);
 	    prizeDisplay.id = "";
 	    prizeDisplay.querySelector(".prizeName").textContent = prize.name;
@@ -132,6 +151,7 @@ class App {
 	event.preventDefault();
 	let id = this._loginForm.userid.value;
 	this._user = await User.loadOrCreate(id);
+	console.log(this._user);
 	this._loadProfile();
     }
 
@@ -139,6 +159,7 @@ class App {
 	event.preventDefault();
 	let id = this._searchForm.influencerid.value;
 	this._displayedInfluencer = await Influencer.load(id);
+	console.log(this._displayedInfluencer);
 	this._loadInfluencerPage();
     }
 
@@ -146,6 +167,7 @@ class App {
 	event.preventDefault();
 	let id = event.target.textContent;
 	this._displayedInfluencer = await Influencer.load(id);
+	console.log(this._displayedInfluencer);
 	this._loadInfluencerPage();
 	
     }

@@ -12,10 +12,10 @@ db.influencers.insertOne({id: "turtlecreeklane", name: "Turtle Creek Lane", pict
 
 db.influencers.insertOne({id: "kimmyhoughton", name: "Kimmy Houghton", picture: "Kimmy-Houghton.jpeg", numFollowers: 43900, bio: "Weekly Date ideas \n 💕 Affordable Fashion ", prizes: [{ name: "Gym Starter Pack", picture: "KimmyGym.jpg", description: "I take these essentials with me to workout every day!", quantity: 25, cost: 2000} ]})
 
-db.influencers.insertOne({id: "iamgalla", name: "Adam Gallagher", picture: "Adam-Gallagher.jpg", numFollowers: 1900000, bio: "adam@iamgalla.com ", prizes: [{ name: "Cologne", picture: "green-lavender-visual.png", description: "Look and smell your best with this", quantity: 25, cost: 2000} ]})
+db.influencers.insertOne({id: "iamgalla", name: "Adam Gallagher", picture: "Adam-Gallagher.jpeg", numFollowers: 1900000, bio: "adam@iamgalla.com ", prizes: [{ name: "Cologne", picture: "KimmyGym.jpg", description: "I take these essentials with me to workout every day!", quantity: 25, cost: 2000} ]})
 
-db.influencers.insertOne({id: "kevincurry", name: "Kevin Curry", picture: "Kevin-Curry.jpg", numFollowers: 1600000, bio: "Living life healthier & happier! ", prizes: [{ name: "My Specialized Cookbook", picture: "KevinCurryPrize.jpeg", description: "Win some personalized advice and shopping tips from me AND a copy of my book!", quantity: 25, cost: 2000} ]})
+db.influencers.insertOne({id: "kevincurry", name: "Kevin Curry", picture: "Kevin-Curry.jpg", numFollowers: 1600000, bio: "Living life healthier & happier! ", prizes: [{ name: "My Specialized Cookbook", picture: "KevinCurryPrize.jepg", description: "Win some personalized advice and shopping tips from me AND a copy of my book!", quantity: 25, cost: 2000} ]})
 
-db.influencers.insertOne({id: "wsimmons", name: "Whitney Simmons", picture: "Whitney-Simmons.png", numFollowers: 3000000, bio: "Fitness Trainer ", prizes: [{ name: "Gym Shark fitness clothing", picture: "gymshark.png", description: "2 sets of workout clothes, your choice! These are my favorite!", quantity: 25, cost: 2000} ]})
+db.influencers.insertOne({id: "wsimmons", name: "Whitney Simmons", picture: "Whitney-Simmons.jpg", numFollowers: 3000000, bio: "Fitness Trainer ", prizes: [{ name: "Gym Shark fitness clothing", picture: "gymshark.png", description: "2 sets of workout clothes, your choice! These are my favorite!", quantity: 25, cost: 2000} ]})
 
 

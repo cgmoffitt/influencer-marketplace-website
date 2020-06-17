@@ -23,6 +23,7 @@ class App {
 	this._loadInfluencerPage = this._loadInfluencerPage.bind(this);
 	this._loadInfluencerProfile = this._loadInfluencerProfile.bind(this);
 	this._loadInfluencerPrizes = this._loadInfluencerPrizes.bind(this);
+	this._isFollowing = this._isFollowing.bind(this);
     }
 
     setup() {
@@ -70,7 +71,7 @@ class App {
     _loadFollowPanel(){
 	this._followPanel = document.querySelector("#followPanel")
 
-	for(let influencer of this._user.following.map(details => details.influencer_id)){
+	for (let influencer in this._user.following){
 	    let influencerTab = document.createElement('div');
 	    influencerTab.textContent = influencer;
 	    influencerTab.classList.add("hover");
@@ -97,21 +98,32 @@ class App {
 	profile.querySelector("#bio").textContent = this._displayedInfluencer.bio;
 	profile.querySelector("#followerCount").textContent = `Followers: ${this._displayedInfluencer.numFollowers}`;
 	profile.querySelector("#prizeCount").textContent = `Prizes: ${this._displayedInfluencer.prizes.length}`;
-	/*if (this._user._isFollowing(this.displayedInfluencer.id)){
+	if (this._isFollowing()){
 	    profile.querySelector("#followingStatus").textContent = "following";
 	} else {
 	    profile.querySelector("#followingStatus").textContent = "follow";
-	}*/
+	}
 	profile.classList.remove("hidden");
     }
 
+    _isFollowing(){
+	if (this._user.following.hasOwnProperty(this._displayedInfluencer.id)){
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+
     _loadInfluencerPrizes(){
-
-	
-
 	//Add influencer's prizes
 	let prizes = this._influencerPage.querySelector("#prizes");
-	console.log(prizes);
+	let points;
+	if (this._isFollowing()){
+	    points = this._user.following[`${this._displayedInfluencer.id}`];
+	} else {
+	    points = 0;
+	}
+	prizes.querySelector("#totalPoints").textContent = `Total Points: ${points}`;
 	prizes.classList.remove("hidden");
 	let prizeDisplays = prizes.querySelector("#prizeDisplays");
 
