@@ -41,8 +41,11 @@
 	  <section id="sidebar">
             <section id="followPanel">
               <h2>My Follows</h2>
+	      <div id="follows"></div>
             </section>
-          </section>	  
+          </section>
+	  
+	  
 	 
 	  <div id= "influencerPage">
 
@@ -60,7 +63,8 @@
 		  <div class= "stat" id="followerCount"></div>
 		  <div class= "stat" id="prizeCount"></div>
 		</div>
-		<div id="followingStatus">following</div>
+		<button type="submit" id="followingStatus"></button>
+		<div id="dropdown"></div>
 	      </div>
 	    </div>
 

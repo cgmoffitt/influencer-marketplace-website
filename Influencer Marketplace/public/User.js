@@ -1,14 +1,5 @@
 import apiRequest from "./api.js";
 
-/* A small class to represent a Post */
-export class Post {
-  constructor(data) {
-    this.user = data.user;
-    this.time = new Date(data.time);
-    this.text = data.text;
-  }
-}
-
 export default class User {
   /* Returns an array of user IDs */
   static async listUsers() {
@@ -17,60 +8,36 @@ export default class User {
     return data.users;
   }
   
-  /* Returns a User object, creating the user if necessary */
-  static async loadOrCreate(id) {
+  /* Returns a User object */
+  static async load(id) {
       let [status, data] = await apiRequest("GET", `/users/${id}`);
-      /*if (status !==200) {
-	  [status, data] = await apiRequest("POST", "/users", {id: id});
-      }*/
-      return new User(data);
+      if (status !==200) {
+	  alert(`There is no user with id: ${id}`);
+	  return null;
+	//  [status, data] = await apiRequest("POST", "/users", {id: id});
+      } else{
+	  return new User(data);
+      }
+      
   }
 
   constructor(data) {
-      //TODO
       Object.assign(this, data);
       this._path = `${window.API_URL}/${this.id}`;
   }
 
-  async save() {
-      //TODO
-      
-      let [status, data] = await apiRequest("PATCH", `/users/${this.id}`, {id: this.id, name: this.name, avatarURL: this.avatarURL})
-      return new User(data);
-      
-  }
-
-  /* Returns an array of Post objects */
-  async getFeed() {
-      //TODO
-
-      let [status, data] = await apiRequest("GET", `users/${this.id}/feed`);
-      return data.posts;
-  }
-
-  async makePost(postText) {
-      //TODO
-      console.log(postText);
-
-      try {
-	  let [status, data] = await apiRequest("POST", `users/${this.id}/posts`, {text: postText});
-	  return data;
-      }catch(e){
-	  alert(e)
-      }  
-  }
-
+  /* Adds an influencer to a user's following hashmap {influencerId: total points} */
   async addFollow(id) {
-      //TODO
       console.log(id);
-      let [status, data] = await apiRequest("POST", `users/${this.id}/follow?target=${id}`);
+      let [status, data] = await apiRequest("POST", `users/${this.id}/follow?influencer=${id}`);
       console.log(status);
       return data;
   }
 
+  /* Deletes an influencer from a user's following hashmap*/
   async deleteFollow(id) {
-      //TODO
-      let [status,data] = await apiRequest("DELETE", `users/${this.id}/follow?target=${id}`)
+      let [status,data] = await apiRequest("DELETE", `users/${this.id}/follow?influencer=${id}`)
       return data;
   }
+  
 }

@@ -7,9 +7,6 @@ const { MongoClient } = require("mongodb");
 
 let DATABASE_NAME = "influencer_marketplace";
 
-/* Do not modify or remove this line. It allows us to change the database for grading */
-if (process.env.DATABASE_NAME) DATABASE_NAME = process.env.DATABASE_NAME;
-
 let api = express.Router();
 let conn;
 let db;
@@ -35,22 +32,29 @@ api.get("/", (req, res) => {
 
 
 
-/* List influencers */
+/*
+GET /influencers
+Returns res as an object with a single key "influencers", whose value is an  arrray of all influencer names in the mongo db */
 api.get("/influencers", async (req, res) => {
     console.log("here");
     let influencers = await Influencers.find().toArray();
     res.json({ influencers: influencers.map(influencer => influencer.name) });
 });
 
-/* List users */
+/*
+GET /users
+Returns res as an object with a single key "users", whose value is an array of all users in the mongo db
+*/
 api.get("/users", async (req, res) => {
-    console.log("here");
     let users = await Users.find().toArray();
     res.json({ users: users.map(user => user.id) });
 });
 
 
-/* Middleware to lookup influencer */
+/* 
+Middleware to lookup influencer 
+Inserts the influencer object from the database with the specified id into res.locals
+*/
 api.use("/influencers/:id", async (req, res, next) => {
     let id = req.params.id;
     let influencer = await Influencers.findOne({ id });
@@ -60,7 +64,10 @@ api.use("/influencers/:id", async (req, res, next) => {
     next();
 });
 
-/* Middleware to lookup user */
+/* 
+Middleware to lookup user 
+Inserts the user object from the database with the specified id into res.locals
+*/
 api.use("/users/:id", async (req, res, next) => {
     let id = req.params.id;
     let user = await Users.findOne({ id });
@@ -70,7 +77,10 @@ api.use("/users/:id", async (req, res, next) => {
     next();
 });
 
-/* Get a influencers' info */
+/* 
+GET /influencers/:id
+Returns res as the influencer object of the specified id
+*/
 api.get("/influencers/:id", (req, res) => {
     if(res.locals.influencer){
 	let influencer = res.locals.influencer;
@@ -81,7 +91,10 @@ api.get("/influencers/:id", (req, res) => {
     }
 });
 
-/* Get a users' info */
+/*
+GET /users/:id 
+Returns res as the user object of the specified id
+*/
 api.get("/users/:id", (req, res) => {
     if(res.locals.user){
 	let user = res.locals.user;
@@ -92,144 +105,67 @@ api.get("/users/:id", (req, res) => {
     }
 });
 
-
-
-/* Post a new user*/
-
-api.post("/users", async (req, res) => {
-    if(req.body.id || req.body.id !== ""){
-	let id = req.body.id;
-	if (!(await Users.findOne({ id }))){
-	    let user = { id: id, name: id, avatarURL: "", following: [] }
-	    await Users.insertOne(user);
-	    res.json({id: id, name: user.name, avatarURL: user.avatarURL, following: user.following });
-	} else {
-	     res.status(401).json({ error: `User ${id} already exists` });
-	}
-    } else {
-	 res.status(400).json({ error: "Must provide id property" });
-    }
-});
-
-/* Update a user */
-api.patch("/users/:id", async (req, res) => {
-    if(res.locals.user){
-	let user = res.locals.user;
-	let { id, name, avatarURL, following } = user;
-	let newName = req.body.name;
-	user.name = newName;
-	await Users.replaceOne({ id: user.id }, user);
-	res.json(user)
-    } else {
-	 res.status(404).json({ error: `User ${req.params.id} does not exist` });
-    }
-});
-
-/* Get a user's feed */
-api.get("/users/:id/feed", async (req, res) => {
-    if(res.locals.user){
-	let user = res.locals.user;
-	
-	let followingPosts = await Posts.find({userId: {$in: user.following } }).toArray();
-	let personalPosts = await Posts.find({userId: {$eq: user.id } }).toArray();
-	let posts = followingPosts.concat(personalPosts);
-
-	let formatedPosts = [];
-	for (let post of posts){
-	    let user = await Users.findOne({id: {$eq: post.userId}});
-	    user = {id: user.id, name: user.name, avatarURL: user.avatarURL};
-	    post = {user: user, time: post.time, text: post.text}
-	    formatedPosts.push(post);
-	}
-	
-	let sortedPosts = formatedPosts.sort((a, b) => {
-	    return b.time - a.time;
-	});
-	
-	res.json({posts: sortedPosts});
-    } else {
-	 res.status(404).json({ error: `User ${req.params.id} does not exist` });
-    }
-   
-});
-
-/* Make a post */
-api.post("/users/:id/posts", async (req, res) => {
-    if(res.locals.user){
-	if (req.body.text){
-	    let user = res.locals.user;
-	    let text = req.body.text;
-	    console.log(text);
-	    let post = { userId: user.id, time: new Date(), text: text };
-	    await Posts.insertOne(post);
-	    res.json({"success": true})
-	} else {
-	    res.status(404).json({ error: `Must provide text property` });
-	}
-    } else {
-	 res.status(404).json({ error: `User ${req.params.id} does not exist` });
-    }
-    
-});
-
-/* Add a follow */
+/* 
+POST /users/:id/follow
+Adds an influencer to the hashmap of influencers that the user follows. The key being the influencer's id, the value being 0 points
+*/
 api.post("/users/:id/follow", async (req, res) => {
     if(!res.locals.user){
 	res.status(404).json({ error: `User ${req.params.id} does not exist` });
 	return;
     }
-    if(!req.query.target || req.query.target === ""){
+    if(!req.query.influencer || req.query.influencer === ""){
 	res.status(401).json({ error: "Must provide target property" });
 	return;
     }
 	
-    let userToFollow = req.query.target;
+    let influencerToFollow = req.query.influencer;
     let user = res.locals.user;
     let following = user.following;
 
-    if(!(await Users.findOne({ id: userToFollow }))){
-	res.status(400).json({ error: `Target user ${req.params.target} does not exist` });
+    if(!(await Influencers.findOne({ id: influencerToFollow }))){
+	res.status(400).json({ error: `Target influencer ${req.query.influencer} does not exist` });
 	return;
     }
-    if(user.id === userToFollow){
-	res.status(401).json({ error: "Requesting user is same as target" });
-	return;
-    }
-    if(following.includes(userToFollow)){
-	res.status(401).json({ error: `Already following ${userToFollow}` });
+   
+    if(following.hasOwnProperty(influencerToFollow)){
+	res.status(401).json({ error: `Already following ${influencerToFollow}` });
 	return;
     }
     
-    following.push(userToFollow);
+    following[influencerToFollow] = 0;
     await Users.updateOne({id: user.id}, {$set: {following: following }});
     res.json({"success": true})  
 });
 
-/* Delete a follow */
+
+/* 
+DELETE /users/:id/follow
+Deletes an influencer from the hashmap of influencers that the user follows.
+*/
 api.delete("/users/:id/follow", async (req, res) => {
     if(!res.locals.user){
 	res.status(404).json({ error: `User ${req.params.id} does not exist` });
 	return;
     }
-    if(!req.query.target || req.query.target === ""){
-	res.status(401).json({ error: "Must provide target property" });
+    if(!req.query.influencer || req.query.influencer === ""){
+	res.status(401).json({ error: "Must provide influencer property" });
 	return;
     }
     
-    let followingToDelete = req.query.target;
+    let followingToDelete = req.query.influencer;
     let user = res.locals.user;
     let following = user.following;
 
-    if(!following.includes(followingToDelete)){
+    if(!following.hasOwnProperty(followingToDelete)){
 	res.status(401).json({ error: `Not following ${followingToDelete}` });
 	return;
     }
     
-    let index = following.indexOf(followingToDelete);
+    delete following[followingToDelete];
     await Users.updateOne({id: user.id}, {$set: {following: following }});
     res.json({"success": true});
 });
-
 
 
 /* Catch-all route to return a JSON error if endpoint not defined */

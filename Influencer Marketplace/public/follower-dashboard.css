@@ -189,7 +189,7 @@ input:focus {
     width: 100%;
 }
 
-#followPanel > div {
+#followPanel h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -199,6 +199,18 @@ input:focus {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 	    
+}
+
+#follows > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: solid 1px #ccd6dd;
+
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
 }
 
 #followPanel h2, #followPanel h2 {
@@ -306,14 +318,39 @@ input:focus {
     margin-left: 5rem;
 }
 
-#followingStatus {
+#followingStatus.notFollowing {
+    border: 1px solid #c7d1c5;
+    border-radius: 4px;
+    /*background-color: #ffff;*/
+    padding: 2px;
+    /*margin: 10px 0;*/
+    width: 15vw;
+    text-align: center;
+}
+
+#followingStatus.following {
     border: 1px solid #c7d1c5;
     border-radius: 4px;
     background-color: #ffff;
+    color: black;
     padding: 2px;
-    margin: 10px 0;
+    margin: 0;
     width: 15vw;
     text-align: center;
+    font-weight: normal;
+}
+
+#dropdown > button {
+    border: 1px solid #c7d1c5;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    color: black;
+    padding:0 10px;
+    margin: 0;
+    width: 6rem;
+    text-align: left;
+    font-weight: normal;
+    
 }
 
 /***** Prizes *******/
