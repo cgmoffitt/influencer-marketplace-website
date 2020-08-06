@@ -206,7 +206,7 @@ class App {
     async _onFollow(event){
 	event.preventDefault();
 	await this._user.addFollow(this._displayedInfluencer.id);
-	this._user = await User.load(this._user.id);
+	this._user = await User.loadu(this._user.id);
 	this._loadInfluencerPage();
 	this._loadFollowPanel();
     }
